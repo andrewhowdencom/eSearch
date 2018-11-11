@@ -13,7 +13,7 @@
     "phpcs": {
       "type": "phpcs",
       "include": "(\\.(php|phtml)$)",
-      "phpcs.standard": "SitewardsStandard"
+      "phpcs.standard": "PSR2"
     },
     "csv": {
       "type": "script-and-regex",
