@@ -8,6 +8,10 @@ use App\Entities\Status;
 
 class SearchController extends Controller
 {
+    const HEADER_CONTENT_TYPE = 'Content-Type';
+
+    const CONTENT_TYPE_APPLICATION_JSON = '';
+
     /**
      * Allows querying the search database
      *
