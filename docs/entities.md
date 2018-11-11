@@ -1,7 +1,11 @@
-# Primitives
+# Entities
 
 This document describes the primitives used by their application. Where possible, the primtives are reused from
 Schema.org.
+
+## Status
+
+The status object is an object that expresses whether a given call has worked or not.
 
 ## Product
 
