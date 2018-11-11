@@ -59,6 +59,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Status"
+        '405':
+          description: "Method Not Allowed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.store.littleman.co/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "NotAllowed"
+                message: "This method is not appropriate for this endpoint"
         '500':
           description: "Internal server error"
           content:
@@ -70,7 +82,19 @@ paths:
                 "@schema": "Status"
                 status: "Failure"
                 reason: "InternalServerError"
-                message: "The server suffered a crtiical error while fulfilling this request"
+                message: "The server suffered a critical error while fulfilling this request"
+        '501':
+          description: "Method not implemented"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.store.littleman.co/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "NotImplemented"
+                message: "This method is not yet implemented."
         '503':
           description: "Service unavailable"
           content:
@@ -124,11 +148,23 @@ paths:
               schema:
                 $ref: "#/components/schemas/Status"
               example:
-                "@context": "http://api.__STORE__.de/"
+                "@context": "http://api.store.littleman.co/"
                 "@schema": "Status"
                 status: "Failure"
                 reason: "Forbidden"
                 message: "You are not authorized to access this resource"
+        '405':
+          description: "Method Not Allowed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.store.littleman.co/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "NotAllowed"
+                message: "This method is not appropriate for this endpoint"
         '500':
           description: "Internal server error"
           content:
@@ -136,11 +172,23 @@ paths:
               schema:
                 $ref: "#/components/schemas/Status"
               example:
-                "@context": "http://api.__STORE__.de/"
+                "@context": "http://api.store.littleman.co/"
                 "@schema": "Status"
                 status: "Failure"
                 reason: "InternalServerError"
                 message: "The server suffered a crtiical error while fulfilling this request"
+        '501':
+          description: "Method not implemented"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.store.littleman.co/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "NotImplemented"
+                message: "This method is not yet implemented."
         '503':
           description: "Service unavailable"
           content:
@@ -305,10 +353,12 @@ components:
           enum:
             - "Created"
             - "NotFound"
+            - "MethodNotAllowed"
             - "BadRequest"
-            - "ServiceUnavailable"
             - "Forbidden"
             - "InternalServerError"
+            - "ServiceUnavailable"
+            - "NotImplemented"
         message:
           type: "string"
           example: "The item you are searching for was not found"
