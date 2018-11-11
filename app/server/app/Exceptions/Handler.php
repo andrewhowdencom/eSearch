@@ -3,11 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Entities\Status;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -45,6 +48,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // Handle not allowed methods specifically.
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            $status = new Status(
+                Status::STATUS_FAILURE,
+                Status::REASON_METHOD_NOT_ALLOWED,
+                sprintf('The method "%s" is not allowed at this endpoint', $request->getMethod())
+            );
+
+            return (new Response(json_encode($status), Response::HTTP_METHOD_NOT_ALLOWED))
+                ->withHeaders(['Content-Type' => 'application/json']);
+        }
+
         return parent::render($request, $exception);
     }
 }
