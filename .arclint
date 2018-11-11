@@ -1,0 +1,25 @@
+{
+  "linters": {
+    "yamllint": {
+      "type": "script-and-regex",
+      "include": "(\\.(yaml|yml)$)",
+      "script-and-regex.script": "sh -c '/usr/bin/yamllint -f parsable \"$0\" || true'",
+      "script-and-regex.regex": "/^(?P<file>[A-z0-9-_\\.\\/]+):(?P<line>[0-9]+):(?P<char>[0-9]+):\\s\\[(?P<severity>[a-z]+)\\]\\s(?P<message>.*)$/m"
+    },
+    "php": {
+      "type": "php",
+      "include": "(\\.(php|phtml)$)"
+    },
+    "phpcs": {
+      "type": "phpcs",
+      "include": "(\\.(php|phtml)$)",
+      "phpcs.standard": "SitewardsStandard"
+    },
+    "csv": {
+      "type": "script-and-regex",
+      "include": "(\\.csv$)",
+      "script-and-regex.script": "sh -c 'csvlint \"$0\" || true'",
+      "script-and-regex.regex": "/^.*#(?P<line>[0-9]+)\\shas\\s(?P<severity>[A-Za-z]+): (?P<message>.*)/"
+    }
+  }
+}

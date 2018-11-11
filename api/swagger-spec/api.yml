@@ -1,0 +1,314 @@
+---
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "eSearch"
+  license:
+    name: "MIT"
+# There are no servers hosted yet.
+servers:
+  - url: "http://api.__STORE__.de/"
+paths:
+  "/v1/search":
+    get:
+      description: |
+        Queries all products for content that matches the supplied query
+      security:
+        - OAuth2: [search.search]
+      operationId: "searchProductsv1"
+      parameters:
+        - name: "q"
+          in: "query"
+          description: "The thing to search for in the products"
+          required: true
+          schema:
+            type: "string"
+        - name: "filter"
+          in: "query"
+          required: false
+          description: "Additional filters for the products"
+          schema:
+            items:
+              $ref: "#/components/schemas/FilterValue"
+          style: "deepObject"
+          explode: false
+      responses:
+        '200':
+          description: "Matching products"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ItemList"
+        '403':
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.__STORE__.de/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "Forbidden"
+                message: "You are not authorized to access this resource"
+        '404':
+          description: "No matching products"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.__STORE__.de/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "InternalServerError"
+                message: "The server suffered a crtiical error while fulfilling this request"
+        '503':
+          description: "Service unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.__STORE__.de/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "ServiceUnavailable"
+                message: "The server is temporarily unavailable. Please try again."
+
+  "/v1/update":
+    put:
+      description: |
+        Updates a given product entry within the search index.
+      security:
+        - OAuth2: [search.update]
+      operationId: "putProductv1"
+      requestBody:
+        required: true
+        description: "The product data to update"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        '201':
+          description: "Product was successfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.__STORE__.de/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "BadRequest"
+                message: "The request to the server was not in the form expected. Please correct it and try again"
+        '403':
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.__STORE__.de/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "Forbidden"
+                message: "You are not authorized to access this resource"
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.__STORE__.de/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "InternalServerError"
+                message: "The server suffered a crtiical error while fulfilling this request"
+        '503':
+          description: "Service unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              example:
+                "@context": "http://api.__STORE__.de/"
+                "@schema": "Status"
+                status: "Failure"
+                reason: "ServiceUnavailable"
+                message: "The server is temporarily unavailable. Please try again."
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://oauth2.__STORE__.de/oauth/authorize
+          tokenUrl: https://oauth2.__STORE__.de/oauth/token
+          scopes:
+            search.search: Allows access to the `/search` endpoint
+            search.update: Allows access to the `/update` endpoint
+  schemas:
+    # This defines where information about the schemas can be found, as well as their behaviour and
+    # usage.
+    SchemaDefinition:
+      required:
+        - "@type"
+        - "@context"
+      properties:
+        "@context":
+          type: "string"
+          example: "http://schema.org"
+        "@type":
+          type: "string"
+          example: "Thing"
+    # Request Parameters
+    FilterValue:
+      properties:
+        name:
+          type: "string"
+          example: "color"
+        value:
+          type: "string"
+          example: "blue"
+    # Primitives
+    PropertyValue:
+      allOf:
+        - $ref: "#/components/schemas/SchemaDefinition"
+      required:
+        - "name"
+        - "value"
+      properties:
+        "@context":
+          type: "string"
+          example: "http://schema.org/"
+        "@type":
+          type: "string"
+          example: "PropertyValue"
+        name:
+          type: "string"
+          example: "colour"
+        value:
+          type: "string"
+          example: "white"
+    Product:
+      allOf:
+        - $ref: "#/components/schemas/SchemaDefinition"
+      required:
+        - "identifier"
+        - "name"
+        - "sku"
+      properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
+        sku:
+          type: "string"
+        category:
+          $ref: "#/components/schemas/Category"
+        additionalProperty:
+          items:
+            $ref: "#/components/schemas/PropertyValue"
+      example:
+        "@context": "http://schema.org/"
+        "@schema": "Product"
+        identifier: "53e96b46-e5c8-11e8-835b-df354abc17f1"
+        name: "FooDress"
+        description: "This is a truly excellent dress"
+        category:
+          "@context": "http://schema.org/"
+          "@schema": "Thing"
+          identifier: "82245afc-e5c8-11e8-a7cf-177ca2283d65"
+          name: "Dresses"
+          description: "All the dresses"
+        additionalProperty:
+          - "@context": "http://schema.org"
+            "@type": "PropertyValue"
+            name: "colour"
+            value: "blue"
+    Category:
+      allOf:
+        - $ref: "#/components/schemas/SchemaDefinition"
+      required:
+        - "name"
+        - "identifier"
+      properties:
+        identifier:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+      example:
+        "@context": "http://schema.org/"
+        "@schema": "Thing"
+        identifier: "82245afc-e5c8-11e8-a7cf-177ca2283d65"
+        name: "Dresses"
+        description: "All the dresses"
+    # Groups of entities
+    ItemList:
+      allOf:
+        - $ref: "#/components/schemas/SchemaDefinition"
+      properties:
+        "@type":
+          type: "string"
+          example: "ItemList"
+        url:
+          type: "string"
+          example: "https://example.com/search?=q=Wedding Dress&filter=foo:bar,baz:herp"
+        itemListElement:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Product"
+    # Request Statuses
+    Status:
+      allOf:
+        - $ref: "#/components/schemas/SchemaDefinition"
+      required:
+        - "status"
+        - "message"
+      properties:
+        "@context":
+          type: "string"
+          example: "http://api.__STORE__.de/"
+        "@type":
+          type: "string"
+          example: "Status"
+        status:
+          type: "string"
+          example: "Failure"
+          enum:
+            - "Success"
+            - "Failure"
+        # Generally maps to the HTTP status codes that are generated.
+        reason:
+          type: "string"
+          example: "NotFound"
+          enum:
+            - "Created"
+            - "NotFound"
+            - "BadRequest"
+            - "ServiceUnavailable"
+            - "Forbidden"
+            - "InternalServerError"
+        message:
+          type: "string"
+          example: "The item you are searching for was not found"
