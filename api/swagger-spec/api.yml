@@ -7,7 +7,7 @@ info:
     name: "MIT"
 # There are no servers hosted yet.
 servers:
-  - url: "http://api.__STORE__.de/"
+  - url: "http://api.store.littleman.co/"
 paths:
   "/v1/search":
     get:
@@ -48,7 +48,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Status"
               example:
-                "@context": "http://api.__STORE__.de/"
+                "@context": "http://api.store.littleman.co/"
                 "@schema": "Status"
                 status: "Failure"
                 reason: "Forbidden"
@@ -66,7 +66,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Status"
               example:
-                "@context": "http://api.__STORE__.de/"
+                "@context": "http://api.store.littleman.co/"
                 "@schema": "Status"
                 status: "Failure"
                 reason: "InternalServerError"
@@ -78,7 +78,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Status"
               example:
-                "@context": "http://api.__STORE__.de/"
+                "@context": "http://api.store.littleman.co/"
                 "@schema": "Status"
                 status: "Failure"
                 reason: "ServiceUnavailable"
@@ -112,7 +112,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Status"
               example:
-                "@context": "http://api.__STORE__.de/"
+                "@context": "http://api.store.littleman.co/"
                 "@schema": "Status"
                 status: "Failure"
                 reason: "BadRequest"
@@ -148,7 +148,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Status"
               example:
-                "@context": "http://api.__STORE__.de/"
+                "@context": "http://api.store.littleman.co/"
                 "@schema": "Status"
                 status: "Failure"
                 reason: "ServiceUnavailable"
@@ -160,8 +160,8 @@ components:
       type: oauth2
       flows:
         authorizationCode:
-          authorizationUrl: https://oauth2.__STORE__.de/oauth/authorize
-          tokenUrl: https://oauth2.__STORE__.de/oauth/token
+          authorizationUrl: https://oauth2.store.littleman.co/oauth/authorize
+          tokenUrl: https://oauth2.store.littleman.co/oauth/token
           scopes:
             search.search: Allows access to the `/search` endpoint
             search.update: Allows access to the `/update` endpoint
@@ -288,7 +288,7 @@ components:
       properties:
         "@context":
           type: "string"
-          example: "http://api.__STORE__.de/"
+          example: "http://api.store.littleman.co/"
         "@type":
           type: "string"
           example: "Status"
