@@ -11,6 +11,9 @@
 |
 */
 
+/** @var $router Laravel\Lumen\Routing\Router */
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/v1/search', 'SearchController@search');
