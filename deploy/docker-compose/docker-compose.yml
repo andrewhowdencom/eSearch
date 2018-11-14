@@ -1,0 +1,21 @@
+---
+version: "3"
+services:
+  web:
+    build: containers/web
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      SERVER_NAME: "api.esearch.local"
+      SERVER_ADMIN: "webmaster@esearch.local"
+      DOCUMENT_ROOT: "/var/www/html/server/public"
+    volumes:
+      - ./../../app:/var/www/html
+  elasticsearch:
+    image: "elasticsearch:6.4.2"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: "single-node"
