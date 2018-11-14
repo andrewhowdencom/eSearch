@@ -11,12 +11,14 @@ class RoboFile extends \Robo\Tasks
     const DEV_PRESENT = 'present';
     const DEV_ABSENT  = 'absent';
 
+    const PROJECT_PATH_DOCKER_COMPOSE = 'deploy' . DIRECTORY_SEPARATOR . 'docker-compose';
+
     /**
      * Starts the developer environment
      *
      * @option state Whether the development environment should be present (up) or absent (down, halted)
      */
-    public function dev($opts = ['state' => self::DEV_PRESENT])
+    public function devEnv($opts = ['state' => self::DEV_PRESENT])
     {
         $validConditions = [self::DEV_PRESENT, self::DEV_ABSENT];
 
@@ -34,7 +36,17 @@ class RoboFile extends \Robo\Tasks
         }
 
         $this->taskExec('docker-compose ' . implode(' ', $subCommands))
-            ->dir('deploy/docker-compose')
+            ->dir(self::PROJECT_PATH_DOCKER_COMPOSE)
+            ->run();
+    }
+
+    /**
+     * Starts a shell in the container running Apache
+     */
+    public function devShell()
+    {
+        $this->taskExec('docker-compose exec --user="developer" web /bin/bash')
+            ->dir(self::PROJECT_PATH_DOCKER_COMPOSE)
             ->run();
     }
 }
