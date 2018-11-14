@@ -96,6 +96,18 @@ $app->register(\Elasticquent\ElasticquentServiceProvider::class);
 
 class_alias(Elasticquent\ElasticquentElasticsearchFacade::class, 'Es');
 
+
+/*
+|--------------------------------------------------------------------------
+| Load The Configuration Files
+|--------------------------------------------------------------------------
+|
+| Here we configure the application with third party configuration files
+|
+*/
+
+$app->configure('config/elastiquent.php');
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
