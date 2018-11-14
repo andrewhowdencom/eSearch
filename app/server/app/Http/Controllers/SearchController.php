@@ -21,7 +21,6 @@ class SearchController extends Controller
      */
     public function search(Request $request)
     {
-
         // Todo: Authentication
         // Todo: Validate via middleware.
         $status = new Status(
