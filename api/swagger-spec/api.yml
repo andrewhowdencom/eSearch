@@ -278,7 +278,7 @@ components:
       example:
         "@context": "http://schema.org/"
         "@schema": "Product"
-        identifier: "53e96b46-e5c8-11e8-835b-df354abc17f1"
+        id: "53e96b46-e5c8-11e8-835b-df354abc17f1"
         name: "FooDress"
         description: "This is a truly excellent dress"
         category:
@@ -299,7 +299,7 @@ components:
         - "name"
         - "identifier"
       properties:
-        identifier:
+        id:
           type: "string"
         name:
           type: "string"
@@ -308,7 +308,7 @@ components:
       example:
         "@context": "http://schema.org/"
         "@schema": "Thing"
-        identifier: "82245afc-e5c8-11e8-a7cf-177ca2283d65"
+        id: "82245afc-e5c8-11e8-a7cf-177ca2283d65"
         name: "Dresses"
         description: "All the dresses"
     # Groups of entities
