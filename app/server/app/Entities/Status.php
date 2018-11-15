@@ -11,7 +11,7 @@ use App\Exceptions\InvalidEntityException;
  *
  * @package App\Entities
  */
-class Status implements SchemaDefinitionInterface, \JsonSerializable
+class Status implements SchemaDefinition, \JsonSerializable
 {
     const CONTEXT = 'http://api.store.littleman.co/';
     const TYPE    = 'Status';

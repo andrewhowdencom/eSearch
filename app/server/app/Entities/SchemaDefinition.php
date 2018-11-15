@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Entities;
 
-interface SchemaDefinitionInterface
+interface SchemaDefinition
 {
     /**
      * Returns the "Type" of the Schema.
