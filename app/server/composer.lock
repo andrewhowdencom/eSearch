@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b6312336649cdec57fc25715ea79102",
+    "content-hash": "a157e2b9e6118d97b98d9331746ae9fd",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -121,62 +121,6 @@
                 "schedule"
             ],
             "time": "2018-06-06T03:12:17+00:00"
-        },
-        {
-            "name": "elasticquent/elasticquent",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/elasticquent/Elasticquent.git",
-                "reference": "1921d3adf7c3fb332b42dcdf3ad209660fcdd8df"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/elasticquent/Elasticquent/zipball/1921d3adf7c3fb332b42dcdf3ad209660fcdd8df",
-                "reference": "1921d3adf7c3fb332b42dcdf3ad209660fcdd8df",
-                "shasum": ""
-            },
-            "require": {
-                "elasticsearch/elasticsearch": "~6.0",
-                "illuminate/config": "~4.2|^5",
-                "illuminate/database": "~4.2|^5",
-                "nesbot/carbon": "~1.0",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "~4.2|~5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Elasticquent\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Adam Fairholm",
-                    "email": "adam.fairholm@gmail.com",
-                    "homepage": "http://adamfairholm.com"
-                }
-            ],
-            "description": "Maps Laravel Eloquent models to Elasticsearch types.",
-            "homepage": "https://github.com/elasticquent/Elasticquent",
-            "keywords": [
-                "elasticsearch",
-                "eloquent",
-                "laravel"
-            ],
-            "time": "2018-03-23T00:18:11+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -1613,16 +1557,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.35.0",
+            "version": "1.35.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "3c0342ed6cb7c770d0c33595c51c286716552f65"
+                "reference": "5c05a2be472b22f63291d192410df9f0e0de3b19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/3c0342ed6cb7c770d0c33595c51c286716552f65",
-                "reference": "3c0342ed6cb7c770d0c33595c51c286716552f65",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/5c05a2be472b22f63291d192410df9f0e0de3b19",
+                "reference": "5c05a2be472b22f63291d192410df9f0e0de3b19",
                 "shasum": ""
             },
             "require": {
@@ -1667,7 +1611,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-11-14T12:39:51+00:00"
+            "time": "2018-11-14T21:55:58+00:00"
         },
         {
             "name": "nikic/fast-route",

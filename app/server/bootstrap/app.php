@@ -77,24 +77,9 @@ $app->singleton(
 |
 */
 
-// The provider for ES
-$app->register(\Elasticquent\ElasticquentServiceProvider::class);
-
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
-
-/*
-|--------------------------------------------------------------------------
-| Alias classes
-|--------------------------------------------------------------------------
-|
-| Here we provide simpler mechanisms to access classes over a much larger
-| pool
-|
-*/
-
-class_alias(Elasticquent\ElasticquentElasticsearchFacade::class, 'Es');
 
 /*
 |--------------------------------------------------------------------------
