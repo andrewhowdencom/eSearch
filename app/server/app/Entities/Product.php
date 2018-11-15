@@ -11,7 +11,7 @@ use App\Exceptions\InvalidEntityException;
  *
  * @package App\Entities
  */
-class Product extends Entity implements SchemaDefinition, \JsonSerializable
+class Product extends ElasticSearchEntity implements SchemaDefinition, \JsonSerializable
 {
     const CONTEXT = 'http://schema.org';
     const TYPE    = 'Product';
