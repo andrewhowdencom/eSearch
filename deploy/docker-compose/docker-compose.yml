@@ -10,6 +10,8 @@ services:
       SERVER_NAME: "api.esearch.local"
       SERVER_ADMIN: "webmaster@esearch.local"
       DOCUMENT_ROOT: "/var/www/html/server/public"
+
+      ELASTICSEARCH_HOST: "elasticsearch"
     volumes:
       - ./../../app:/var/www/html
   elasticsearch:

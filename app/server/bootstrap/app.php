@@ -26,6 +26,11 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades();
 $app->withEloquent();
 
+// Load configuration files
+collect(scandir(__DIR__ . '/../config'))->each(function ($item) use ($app) {
+    $app->configure(basename($item, '.php'));
+});
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
