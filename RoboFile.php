@@ -12,6 +12,17 @@ class RoboFile extends \Robo\Tasks
     const DEV_ABSENT  = 'absent';
 
     const PROJECT_PATH_DOCKER_COMPOSE = 'deploy' . DIRECTORY_SEPARATOR . 'docker-compose';
+    const PROJECT_PATH_APP_SERVER = 'app' . DIRECTORY_SEPARATOR . 'server';
+
+    /**
+     * Runs application tests
+     */
+    public function test()
+    {
+        $this->taskExec('vendor/bin/phpunit')
+            ->dir(self::PROJECT_PATH_APP_SERVER)
+            ->run();
+    }
 
     /**
      * Starts the developer environment
