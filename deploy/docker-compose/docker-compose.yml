@@ -1,7 +1,32 @@
 ---
 version: "3"
 services:
-  web:
+  # --- Authentication Server
+  mysql.keycloak.local:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+  keycloak.local:
+    image: jboss/keycloak
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql.keycloak.local
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
+      # JDBC_PARAMS: "connectTimeout=30000"
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql.keycloak.local
+  # --- Application
+  api.esearch.local:
     build: containers/web
     ports:
       - 80:80
@@ -11,10 +36,18 @@ services:
       SERVER_ADMIN: "webmaster@esearch.local"
       DOCUMENT_ROOT: "/var/www/html/server/public"
 
-      ELASTICSEARCH_HOST: "elasticsearch"
+      ELASTICSEARCH_HOST: "es.esearch.local"
+
+      # Single sign on properties
+      KEYCLOAK_SERVER: "http://keycloak.local"
+      KEYCLOAK_SERVER_REALM: "master"
+
+      OAUTH2_CLIENT_ID: "esearch"
+      OAUTH2_CLIENT_SECRET: ""
+      OAUTH2_REDIRECT_URL: "http://api.esearch.local/oauth2/redirect"
     volumes:
       - ./../../app:/var/www/html
-  elasticsearch:
+  es.esearch.local:
     image: "elasticsearch:6.4.2"
     ports:
       - 9200:9200
