@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Entities\Status;
 
-class SearchController extends Controller
+class SearchController extends Controller implements Validatable
 {
     const HEADER_CONTENT_TYPE = 'Content-Type';
 
-    const CONTENT_TYPE_APPLICATION_JSON = '';
+    const CONTENT_TYPE_APPLICATION_JSON = 'application/json';
 
     /**
      * Allows querying the search database
@@ -58,5 +58,20 @@ class SearchController extends Controller
 
         return (new Response(json_encode($list), Response::HTTP_OK))
             ->withHeaders([self::HEADER_CONTENT_TYPE => self::CONTENT_TYPE_APPLICATION_JSON]);
+    }
+
+    /**
+     * Returns the parameters either in the query or the body required for this request, in the form required by
+     * Laravels validation library
+     *
+     * See https://laravel.com/docs/5.7/validation#quick-writing-the-validation-logic
+     *
+     * @return array
+     */
+    public static function getRequiredParameters(): array
+    {
+        return [
+            'q' => 'required'
+        ];
     }
 }

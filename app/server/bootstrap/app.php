@@ -63,6 +63,10 @@ $app->singleton(
 |
 */
 
+$app->routeMiddleware([
+    'validate' => \App\Http\Middleware\ValidationMiddleware::class
+]);
+
 // $app->middleware([
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);

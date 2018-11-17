@@ -22,6 +22,8 @@ class ProductTest extends TestCase
 
     /**
      * Verifies the constructed object can be expressed as an array
+     *
+     * @doesNotPerformAssertions
      */
     public function testCanPersistToElasticSearch()
     {

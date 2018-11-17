@@ -16,4 +16,11 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/v1/search', 'SearchController@search');
+
+$router->get(
+    '/v1/search',
+    [
+        'middleware' => 'validate:\App\Http\Controllers\SearchController',
+        'uses' => 'SearchController@search'
+    ]
+);
