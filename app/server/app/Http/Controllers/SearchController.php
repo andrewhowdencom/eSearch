@@ -25,20 +25,15 @@ class SearchController extends Controller implements Validatable
     public function search(Request $request)
     {
         // Todo: Authentication
-        // Todo: Validate via middleware.
         // Todo: Move the logic out into a collection or search abstraction
         $client = ClientBuilder::create()
             ->setHosts([config('elasticsearch.host')])
             ->build();
 
+        // Performs the search in the lucene syntax.
         $results = $client->search([
             'index' => Product::INDEX,
-            'type' => 'object',
-            'body' => [
-                'query' => [
-                    'match_all' => new \StdClass()
-                ]
-            ]
+            'q' => $request->query('q')
         ]);
 
         $hits = $results['hits']['hits'];
