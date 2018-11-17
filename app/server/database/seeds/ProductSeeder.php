@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Elasticsearch\ClientBuilder;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Faker\Factory;
 use App\Entities\Product;
 
@@ -48,7 +49,12 @@ class ProductSeeder extends Seeder
         $idxParams = ['index' => \App\Entities\Product::INDEX];
 
         // Recreate the index from scratch
-        $client->indices()->delete($idxParams);
+        try {
+            $client->indices()->delete($idxParams);
+        } catch (Missing404Exception $e) {
+            // Continue
+        }
+
         $client->indices()->create($idxParams);
 
         for ($i = 0; $i <= 1000; $i++) {
