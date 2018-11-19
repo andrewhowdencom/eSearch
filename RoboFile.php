@@ -56,7 +56,7 @@ class RoboFile extends \Robo\Tasks
      */
     public function devShell()
     {
-        $this->taskExec('docker-compose exec --user="developer" web /bin/bash')
+        $this->taskExec('docker-compose exec --user="developer" api.esearch.local /bin/bash')
             ->dir(self::PROJECT_PATH_DOCKER_COMPOSE)
             ->run();
     }
