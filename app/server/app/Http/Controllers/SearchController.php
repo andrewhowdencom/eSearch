@@ -15,6 +15,9 @@ class SearchController extends Controller implements Validatable
 
     const CONTENT_TYPE_APPLICATION_JSON = 'application/json';
 
+    const PAGINATION_DEFAULT_SIZE = 50;
+    const PAGINATION_DEFAULT_INDEX = 0;
+
     /**
      * Allows querying the search database
      *
@@ -24,17 +27,33 @@ class SearchController extends Controller implements Validatable
      */
     public function search(Request $request)
     {
-        // Todo: Authentication
         // Todo: Move the logic out into a collection or search abstraction
         $client = ClientBuilder::create()
             ->setHosts([config('elasticsearch.host')])
             ->build();
 
-        // Performs the search in the lucene syntax.
-        $results = $client->search([
+        $params = [
             'index' => Product::INDEX,
-            'q' => $request->query('q')
-        ]);
+            'q'     => $request->query('q'),
+            'from'  => self::PAGINATION_DEFAULT_INDEX,
+            'size'  => self::PAGINATION_DEFAULT_SIZE
+        ];
+
+        // Allow overriding size
+        if ($request->query('pageSize')) {
+            $params['size'] = $request->query('pageSize');
+        }
+
+        // Allow specifying page
+        if ($request->query('pageToken')) {
+            // Calculate the offset. The offset is $pageSIze less than the total of the given multipliers. For example,
+            // if we're on page "4" with result sets of "50", we want products 150 → 200.
+            $offset = ($request->query('pageToken') * $request->query('pageSize') - $request->query('pageSize'));
+            $params['from'] = $offset;
+        }
+
+        // Performs the search in the lucene syntax.
+        $results = $client->search($params);
 
         $hits = $results['hits']['hits'];
         $results = [];
