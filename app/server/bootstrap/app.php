@@ -23,13 +23,13 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-$app->withFacades();
-$app->withEloquent();
-
 // Load configuration files
 collect(scandir(__DIR__ . '/../config'))->each(function ($item) use ($app) {
     $app->configure(basename($item, '.php'));
 });
+
+$app->withFacades();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -71,9 +71,7 @@ $app->routeMiddleware([
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware(['token' => \Furdarius\OIDConnect\TokenMiddleware::class]);
 
 /*
 |--------------------------------------------------------------------------
@@ -86,9 +84,25 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Laravel\Socialite\SocialiteServiceProvider::class);
+$app->register(Furdarius\OIDConnect\ServiceProvider::class);
+
+$app->register(App\Providers\AppServiceProvider::class);
+
 // $app->register(App\Providers\EventServiceProvider::class);
+
+/*
+|--------------------------------------------------------------------------
+| Load The Facades
+|--------------------------------------------------------------------------
+|
+| Next we'll define the "fast getters" for the app.
+|
+*/
+if (!class_exists('Socialite')) {
+    class_alias(\Laravel\Socialite\Facades\Socialite::class, 'Socialite');
+}
 
 /*
 |--------------------------------------------------------------------------

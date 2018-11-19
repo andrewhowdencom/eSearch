@@ -13,6 +13,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Lumen does not have the db.connection object
+        // https://github.com/GeneaLabs/laravel-model-caching/issues/148
+        $this->app->bind('db.connection', function ($app) {
+            return $app['db']->connection();
+        });
+
+        $this->app->alias('db.connection', \Illuminate\Database\ConnectionInterface::class);
     }
 }

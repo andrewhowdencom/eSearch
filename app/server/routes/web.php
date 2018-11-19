@@ -20,7 +20,7 @@ $router->get('/', function () use ($router) {
 $router->get(
     '/v1/search',
     [
-        'middleware' => 'validate:\App\Http\Controllers\SearchController',
+        'middleware' => ['token', 'validate:\App\Http\Controllers\SearchController'],
         'uses' => 'SearchController@search'
     ]
 );

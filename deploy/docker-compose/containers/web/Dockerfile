@@ -1,10 +1,13 @@
 FROM quay.io/sitewards/apache-php:7.2-latest
 
 ENV USER_UID 1000
+ENV DEBIAN_FRONTEND noninteractive
 
-# Install PHP xdebug.
+# Install PHP required extensions
 RUN apt-get update && \
-    apt-get install php7.2-xdebug --yes
+    apt-get install --yes \
+        php-sqlite3 \
+        php7.2-xdebug
 
 # Configure XDBEUG
 ADD etc/php/7.2/mods-available/xdebug.ini /etc/php/7.2/mods-available/xdebug.ini

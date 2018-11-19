@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Entities\Status;
+use Furdarius\OIDConnect\Exception\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -49,17 +50,32 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         // Handle not allowed methods specifically.
-        if ($exception instanceof MethodNotAllowedHttpException) {
-            $status = new Status(
-                Status::STATUS_FAILURE,
-                Status::REASON_METHOD_NOT_ALLOWED,
-                sprintf('The method "%s" is not allowed at this endpoint', $request->getMethod())
-            );
+        $type = get_class($exception);
 
-            return (new Response(json_encode($status), Response::HTTP_METHOD_NOT_ALLOWED))
-                ->withHeaders(['Content-Type' => 'application/json']);
+        switch ($type) {
+            case MethodNotAllowedHttpException::class:
+                $status = new Status(
+                    Status::STATUS_FAILURE,
+                    Status::REASON_METHOD_NOT_ALLOWED,
+                    sprintf('The method "%s" is not allowed at this endpoint', $request->getMethod())
+                );
+                break;
+            case AuthenticationException::class:
+                $status = new Status(
+                    Status::STATUS_FAILURE,
+                    Status::REASON_FORBIDDEN,
+                    "Failed to authenticate: " . $exception->getMessage()
+                );
+                break;
+            default:
+                $status = new Status(
+                    Status::STATUS_FAILURE,
+                    Status::REASON_INTERNAL_SERVER_ERROR,
+                    sprintf('An unexpected error has occurred. Please try again later.')
+                );
         }
 
-        return parent::render($request, $exception);
+        return (new Response(json_encode($status), Response::HTTP_METHOD_NOT_ALLOWED))
+                ->withHeaders(['Content-Type' => 'application/json']);
     }
 }

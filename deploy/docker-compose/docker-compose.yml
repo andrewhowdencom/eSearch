@@ -36,15 +36,20 @@ services:
       SERVER_ADMIN: "webmaster@esearch.local"
       DOCUMENT_ROOT: "/var/www/html/server/public"
 
+      # Database
+      DB_CONNECTION: "sqlite"
+      DB_DATABASE: "/var/www/html/server/storage/db/database.sqlite"
+
+      # ElasticSearch
       ELASTICSEARCH_HOST: "es.esearch.local"
 
-      # Single sign on properties
-      KEYCLOAK_SERVER: "http://keycloak.local"
-      KEYCLOAK_SERVER_REALM: "master"
-
-      OAUTH2_CLIENT_ID: "esearch"
-      OAUTH2_CLIENT_SECRET: ""
-      OAUTH2_REDIRECT_URL: "http://api.esearch.local/oauth2/redirect"
+      # OpenID
+      OPENID_CLIENT_ID: "esearch"
+      OPENID_CLIENT_SECRET: ""
+      OPENID_URL_REDIRECT: "https://api.esearch.local/auth/callback"
+      OPENID_URL_AUTH: "http://keycloak.local:8080/auth/realms/master/protocol/openid-connect/auth"
+      OPENID_URL_TOKEN: "http://keycloak.local:8080/auth/realms/master/protocol/openid-connect/token"
+      OPENID_URL_KEYS: "http://keycloak.local:8080/auth/realms/master/protocol/openid-connect/certs"
     volumes:
       - ./../../app:/var/www/html
   es.esearch.local:
