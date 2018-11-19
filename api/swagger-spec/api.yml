@@ -326,6 +326,12 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/Product"
+        pageToken:
+          type: "string"
+          example: "10"
+        pageSize:
+          type: "number"
+          example: 50
     # Request Statuses
     Status:
       allOf:
