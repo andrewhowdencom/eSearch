@@ -32,15 +32,6 @@ abstract class ElasticSearchEntity extends Entity implements Arrayable
     }
 
     /**
-     * Denotes the index the model is expected to be saved on.
-     *
-     * Analogous to a "table" in a relational database.
-     *
-     * @return string
-     */
-    abstract public function getIndex(): string;
-
-    /**
      * Returns the canonical object for this reference.
      *
      * Should be a UUID

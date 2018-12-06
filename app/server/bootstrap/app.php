@@ -84,7 +84,7 @@ $app->routeMiddleware(['token' => \Furdarius\OIDConnect\TokenMiddleware::class])
 |
 */
 
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Laravel\Socialite\SocialiteServiceProvider::class);
 $app->register(Furdarius\OIDConnect\ServiceProvider::class);
 

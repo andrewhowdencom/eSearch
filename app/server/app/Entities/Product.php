@@ -16,8 +16,6 @@ class Product extends ElasticSearchEntity implements SchemaDefinition, \JsonSeri
     const CONTEXT = 'http://schema.org';
     const TYPE    = 'Product';
 
-    const INDEX = 'products';
-
     const SERIALISATION_ORDER = [
         'context',
         'type',
@@ -82,11 +80,6 @@ class Product extends ElasticSearchEntity implements SchemaDefinition, \JsonSeri
     public function getType(): string
     {
          return self::TYPE;
-    }
-
-    public function getIndex(): string
-    {
-        return self::INDEX;
     }
 
     public function getId(): string

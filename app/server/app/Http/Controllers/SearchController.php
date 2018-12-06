@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Entities\ItemList;
-use App\Entities\Product;
-use Elasticsearch\ClientBuilder;
+use App\Exceptions\InvalidEntityException;
+use App\Entities\Collection\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Entities\Status;
 
 class SearchController extends Controller implements Validatable
 {
@@ -18,57 +17,47 @@ class SearchController extends Controller implements Validatable
     const PAGINATION_DEFAULT_SIZE = 50;
     const PAGINATION_DEFAULT_INDEX = 0;
 
+    private $collection;
+
+    public function __construct(
+        \App\Entities\Collection\Product $collection
+    )
+    {
+        $this->collection = $collection;
+    }
+
     /**
      * Allows querying the search database
      *
      * @param Request $request
      *
      * @return Response
+     * @throws InvalidEntityException in the case the product collection failed to construct correctly
      */
     public function search(Request $request)
     {
-        // Todo: Move the logic out into a collection or search abstraction
-        $client = ClientBuilder::create()
-            ->setHosts([config('elasticsearch.host')])
-            ->build();
+        $this->collection->setQuery($request->query('q'));
 
-        $params = [
-            'index' => Product::INDEX,
-            'q'     => $request->query('q'),
-            'from'  => self::PAGINATION_DEFAULT_INDEX,
-            'size'  => self::PAGINATION_DEFAULT_SIZE
-        ];
+        // Set some defaults on the number of results that can be later overriden.
+        $this->collection->setStartIndex(Product::DEFAULT_START_INDEX);
+        $this->collection->setNumberResults(Product::DEFAULT_NUMBER_OF_RESULTS);
 
         // Allow overriding size
         if ($request->query('pageSize')) {
-            $params['size'] = $request->query('pageSize');
+            $this->collection->setNumberResults($request->query('pageSize'));
         }
 
         // Allow specifying page
         if ($request->query('pageToken')) {
-            // Calculate the offset. The offset is $pageSIze less than the total of the given multipliers. For example,
+            // Calculate the offset. The offset is $pageSize less than the total of the given multipliers. For example,
             // if we're on page "4" with result sets of "50", we want products 150 → 200.
             $offset = ($request->query('pageToken') * $request->query('pageSize') - $request->query('pageSize'));
-            $params['from'] = $offset;
+            $this->collection->setStartIndex($offset);
         }
 
-        // Performs the search in the lucene syntax.
-        $results = $client->search($params);
-
-        $hits = $results['hits']['hits'];
-        $results = [];
-
-        foreach ($hits as $hit) {
-            $results[] = new Product(
-                [
-                    'id' => $hit['_source']['id'],
-                    'name' => $hit['_source']['name'],
-                    'sku' => $hit['_source']['sku']
-                ]
-            );
-        }
-
-        $list = new ItemList($results);
+        // InvalidEntityException will be deferred to the global error handler, which returns the status object
+        // indicating query failure
+        $list = new ItemList($this->collection->toArray());
 
         return (new Response(json_encode($list), Response::HTTP_OK))
             ->withHeaders([self::HEADER_CONTENT_TYPE => self::CONTENT_TYPE_APPLICATION_JSON]);
